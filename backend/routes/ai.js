@@ -3,6 +3,7 @@ const auth = require("../middleware/auth");
 const {
   generateInterviewQuestions,
   generateConceptExplanation,
+  generateAnswer,
 } = require("../controllers/aiController");
 
 const router = express.Router();
@@ -16,7 +17,9 @@ router.post("/generate-questions", auth, generateInterviewQuestions);
 /**
  * POST /api/ai/generate-explanation
  * body: { topic }
+ * 
  */
 router.post("/generate-explanation", auth, generateConceptExplanation);
+router.post("/generate-answer", auth, generateAnswer);
 
 module.exports = router;
