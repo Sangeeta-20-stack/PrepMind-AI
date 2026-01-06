@@ -56,7 +56,7 @@ export default function Features() {
       group-hover:drop-shadow-[0_6px_20px_rgba(7,190,184,0.35)]
     "
   >
-    Why Choose CareerForge?
+    Why Choose PrepMind?
   </h2>
 
   <p
