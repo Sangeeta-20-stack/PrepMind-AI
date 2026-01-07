@@ -6,7 +6,7 @@ import { FiPlus, FiLogOut } from "react-icons/fi";
 export default function Dashboard() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const SERVER_URL = "http://localhost:5000"; // change to your server URL
+  const SERVER_URL = "https://prepmind-ai-og66.onrender.com"; // change to your server URL
 
   const [user, setUser] = useState(null);
   const [sessions, setSessions] = useState([]);
