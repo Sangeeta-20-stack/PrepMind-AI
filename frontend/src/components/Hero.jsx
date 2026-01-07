@@ -1,4 +1,5 @@
 import { Sparkles, ArrowRight, Brain } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
@@ -49,55 +50,60 @@ export default function Hero() {
 
           {/* Buttons */}
           <div className="mt-10 flex flex-col sm:flex-row gap-6">
-            <button
-              className="
-                inline-flex items-center gap-2
-                px-10 py-4 rounded-full
-                text-white font-bold text-lg
-                bg-gradient-to-r from-[#07beb8] via-[#3dccc7] to-[#68d8d6]
-                shadow-xl shadow-[#07beb8]/40
-                hover:scale-105 hover:shadow-2xl
-                transition-all duration-300
-              "
-            >
-              <Brain size={22} />
-              Get Started
-              <ArrowRight size={20} />
-            </button>
+            
+            {/* GET STARTED → LOGIN */}
+            <Link to="/login">
+              <button
+                className="
+                  inline-flex items-center gap-2
+                  px-10 py-4 rounded-full
+                  text-white font-bold text-lg
+                  bg-gradient-to-r from-[#07beb8] via-[#3dccc7] to-[#68d8d6]
+                  shadow-xl shadow-[#07beb8]/40
+                  hover:scale-105 hover:shadow-2xl
+                  transition-all duration-300
+                "
+              >
+                <Brain size={22} />
+                Get Started
+                <ArrowRight size={20} />
+              </button>
+            </Link>
 
-            <button
-              className="
-                px-10 py-4 rounded-full
-                font-semibold text-lg
-                text-[#0b2e2c]
-                bg-white/70 backdrop-blur
-                border border-white/50
-                shadow-md
-                hover:bg-white hover:-translate-y-1
-                transition-all duration-300
-              "
-            >
-              Learn More
-            </button>
+            {/* LEARN MORE → LOGIN */}
+            <Link to="/login">
+              <button
+                className="
+                  px-10 py-4 rounded-full
+                  font-semibold text-lg
+                  text-[#0b2e2c]
+                  bg-white/70 backdrop-blur
+                  border border-white/50
+                  shadow-md
+                  hover:bg-white hover:-translate-y-1
+                  transition-all duration-300
+                "
+              >
+                Learn More
+              </button>
+            </Link>
+
           </div>
         </div>
 
-{/* RIGHT IMAGE */}
-<div className="flex justify-center animate-fadeInRight">
-  <img
-    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKYpImTSN1GwbPJ-k7YwMvFyXSelrMvh1l8Q&s"
-    alt="CareerForge dashboard preview"
-    className="
-      w-full max-w-md
-      object-contain
-      rounded-2xl
-      shadow-2xl shadow-[#07beb8]/40
-    "
-  />
-</div>
-
-
-
+        {/* RIGHT IMAGE */}
+        <div className="flex justify-center animate-fadeInRight">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKYpImTSN1GwbPJ-k7YwMvFyXSelrMvh1l8Q&s"
+            alt="PrepMind dashboard preview"
+            className="
+              w-full max-w-md
+              object-contain
+              rounded-2xl
+              shadow-2xl shadow-[#07beb8]/40
+            "
+          />
+        </div>
       </div>
     </section>
   );

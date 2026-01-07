@@ -234,127 +234,169 @@ export default function SessionDetails() {
   if (!session) return <p className="p-10 text-center">Session not found</p>;
 
   return (
-    <div className="min-h-screen p-8 bg-[#f3fbfa]">
-      {/* HEADER */}
-      <h1 className="text-4xl font-extrabold mb-3 text-[#055f5c]">
-        {session.role}
-      </h1>
+<div className="min-h-screen px-8 py-10 bg-gradient-to-br from-[#ecfefe] via-[#f7ffff] to-[#eefbfa]">
+  {/* HEADER */}
+  <h1 className="text-4xl font-extrabold text-[#033c3a] tracking-tight mb-3">
+    {session.role}
+  </h1>
 
-      <div className="flex gap-4 mb-6">
-        <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border-l-4 border-[#07beb8]">
-          <MdWork className="text-xl text-[#07beb8]" />
-          {session.experience}
-        </div>
-        <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border-l-4 border-[#3dccc7]">
-          <MdOutlineVisibility className="text-xl text-[#3dccc7]" />
-          {session.topicToFocus}
-        </div>
-      </div>
+  {/* SESSION META */}
+  <div className="flex flex-wrap gap-3 mb-8">
+    <span className="px-4 py-1.5 rounded-full text-sm font-medium
+                     bg-white/80 backdrop-blur
+                     border border-[#d7f3f2] text-[#055f5c] shadow-sm">
+      Experience: {session.experience}
+    </span>
 
-      <button
-        onClick={handleGenerateQuestions}
-        disabled={generatingQuestions}
-        className="mb-6 px-5 py-2 rounded-lg bg-[#07beb8] text-white font-semibold"
+    <span className="px-4 py-1.5 rounded-full text-sm font-medium
+                     bg-white/80 backdrop-blur
+                     border border-[#d7f3f2] text-[#055f5c] shadow-sm">
+      Focus: {session.topicToFocus}
+    </span>
+  </div>
+
+  {/* GENERATE BUTTON */}
+  <button
+    onClick={handleGenerateQuestions}
+    disabled={generatingQuestions}
+    className="mb-10 px-7 py-3 rounded-2xl font-semibold text-white
+               bg-gradient-to-r from-[#07beb8] to-[#3dccc7]
+               shadow-lg shadow-[#07beb8]/25
+               hover:scale-[1.03] hover:shadow-xl
+               active:scale-95
+               disabled:opacity-60 disabled:cursor-not-allowed
+               transition-all"
+  >
+    {generatingQuestions ? "Generating..." : "Generate AI Questions"}
+  </button>
+
+  {/* QUESTIONS */}
+  <div className="flex flex-col gap-8">
+    {session.questions.map((q, index) => (
+      <div
+        key={q._id}
+        className={`p-6 rounded-3xl border transition-all ${
+          q.isPinned
+            ? "border-[#07beb8] bg-white shadow-xl shadow-[#07beb8]/10"
+            : "border-[#e2f5f4] bg-white/80 backdrop-blur shadow-md"
+        }`}
       >
-        {generatingQuestions ? "Generating..." : "Generate AI Questions"}
-      </button>
+        {/* QUESTION HEADER */}
+        <div className="flex justify-between gap-4 mb-4">
+          <p className="text-[15px] font-semibold text-[#022f2d] leading-relaxed">
+            {index + 1}. {q.question}
+          </p>
 
-      {/* QUESTIONS */}
-      <div className="flex flex-col gap-6">
-        {session.questions.map((q, index) => (
-          <div
-            key={q._id}
-            className={`p-5 rounded-xl border ${
-              q.isPinned
-                ? "border-[#07beb8] bg-white shadow-md"
-                : "border-[#cdeeee] bg-[#f9fefe]"
-            }`}
-          >
-            <div className="flex justify-between mb-3">
-              <p className="font-semibold">
-                {index + 1}. {q.question}
-              </p>
-
-              <div className="flex gap-2">
-                <button onClick={() => handlePin(q._id)}>
-                  <BsFillPinFill
-                    className={`text-2xl ${
-                      q.isPinned ? "text-[#07beb8]" : "text-gray-400"
-                    }`}
-                  />
-                </button>
-                <button onClick={() => handleDelete(q._id)}>
-                  <FiTrash2 className="text-xl text-red-500" />
-                </button>
-              </div>
-            </div>
-
-            {/* ANSWER */}
-            {q.answer ? (
-              <div className="bg-white border p-3 rounded-lg mb-2">
-                <strong>A:</strong> {q.answer}
-              </div>
-            ) : (
-              <button
-                onClick={() => handleGenerateAnswer(q._id, q.question)}
-                disabled={generatingAnswer[q._id]}
-                className="px-3 py-1 bg-[#07beb8] text-white rounded-lg mb-2"
-              >
-                Generate Answer
-              </button>
-            )}
-
-            {/* EXPLANATION */}
-            {q.explanation ? (
-              <>
-                <button
-                  onClick={() =>
-                    setShowExplanation((p) => ({
-                      ...p,
-                      [q._id]: !p[q._id],
-                    }))
-                  }
-                  className="text-sm text-[#055f5c] underline"
-                >
-                  {showExplanation[q._id] ? "Show less" : "Show more"}
-                </button>
-
-                {showExplanation[q._id] && (
-                  <div className="mt-2 bg-white p-3 rounded-lg border">
-                    {q.explanation}
-                  </div>
-                )}
-              </>
-            ) : (
-              <button
-                onClick={() => handleGenerateExplanation(q._id, q.question)}
-                className="text-sm text-[#055f5c] underline"
-              >
-                Generate Explanation
-              </button>
-            )}
-
-            {/* NOTES */}
-            <textarea
-              className="w-full mt-3 p-2 border rounded-lg"
-              placeholder="Add note..."
-              value={noteInputs[q._id] || ""}
-              onChange={(e) =>
-                setNoteInputs((p) => ({
-                  ...p,
-                  [q._id]: e.target.value,
-                }))
-              }
-            />
+          {/* ICON ACTIONS */}
+          <div className="flex items-center gap-3 shrink-0">
             <button
-              onClick={() => handleNoteSave(q._id)}
-              className="mt-2 px-3 py-1 bg-[#07beb8] text-white rounded-lg"
+              onClick={() => handlePin(q._id)}
+              className="p-2 rounded-full hover:bg-[#07beb8]/10 transition"
             >
-              Save Note
+              <BsFillPinFill
+                className={`text-xl transition ${
+                  q.isPinned
+                    ? "text-[#07beb8]"
+                    : "text-gray-300 hover:text-[#055f5c]"
+                }`}
+              />
+            </button>
+
+            <button
+              onClick={() => handleDelete(q._id)}
+              className="p-2 rounded-full hover:bg-red-50 transition"
+            >
+              <FiTrash2 className="text-lg text-red-400 hover:text-red-500" />
             </button>
           </div>
-        ))}
+        </div>
+
+        {/* ANSWER */}
+        {q.answer ? (
+          <div className="mb-4 p-4 rounded-2xl
+                          bg-gradient-to-br from-[#f6fefe] to-white
+                          border border-[#def3f2]">
+            <p className="text-sm text-[#033c3a] leading-relaxed">
+              <span className="font-semibold text-[#055f5c]">Answer:</span>{" "}
+              {q.answer}
+            </p>
+          </div>
+        ) : (
+          <button
+            onClick={() => handleGenerateAnswer(q._id, q.question)}
+            disabled={generatingAnswer[q._id]}
+            className="mb-4 px-4 py-1.5 rounded-xl text-sm font-medium
+                       bg-[#07beb8] text-white
+                       hover:bg-[#06aaa5]
+                       disabled:opacity-60 transition"
+          >
+            Generate Answer
+          </button>
+        )}
+
+        {/* EXPLANATION */}
+        {q.explanation ? (
+          <>
+            <button
+              onClick={() =>
+                setShowExplanation((p) => ({
+                  ...p,
+                  [q._id]: !p[q._id],
+                }))
+              }
+              className="text-sm text-[#055f5c] hover:text-[#022f2d]
+                         underline underline-offset-4"
+            >
+              {showExplanation[q._id] ? "Hide explanation" : "View explanation"}
+            </button>
+
+            {showExplanation[q._id] && (
+              <div className="mt-3 p-4 rounded-2xl bg-white
+                              border border-[#e6f6f5]
+                              text-sm text-[#033c3a] leading-relaxed">
+                {q.explanation}
+              </div>
+            )}
+          </>
+        ) : (
+          <button
+            onClick={() => handleGenerateExplanation(q._id, q.question)}
+            className="text-sm text-[#055f5c] hover:text-[#022f2d]
+                       underline underline-offset-4"
+          >
+            Generate Explanation
+          </button>
+        )}
+
+        {/* NOTES */}
+        <textarea
+          className="w-full mt-5 p-4 rounded-2xl
+                     bg-white/95 border border-[#dff4f3]
+                     text-sm
+                     focus:outline-none focus:ring-2 focus:ring-[#07beb8]"
+          placeholder="Write your personal notes or keywords here…"
+          value={noteInputs[q._id] || ""}
+          onChange={(e) =>
+            setNoteInputs((p) => ({
+              ...p,
+              [q._id]: e.target.value,
+            }))
+          }
+        />
+
+        <button
+          onClick={() => handleNoteSave(q._id)}
+          className="mt-3 px-5 py-1.5 rounded-xl text-sm font-medium
+                     bg-[#3dccc7] text-white
+                     hover:bg-[#2fbab5] transition"
+        >
+          Save Note
+        </button>
       </div>
-    </div>
+    ))}
+  </div>
+</div>
+
+
   );
 }
